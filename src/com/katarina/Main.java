@@ -21,7 +21,8 @@ public class Main {
         //Gasi konkciju sa bazoms
         //Kada se pokrene gasenje aplikacije mora konekcija sa bazom da se prekine
 
-
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
         String blabla = null;
         do {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -36,38 +37,65 @@ public class Main {
 
             if (blabla.equals("list")) {
                 try {
-                    MySqlCon.getInstance();
+                    MySqlCon.getInstance().getAllProducts();
+                    for (Product p : MySqlCon.getInstance().getAllProducts()) {
+                        System.out.println(p);
+                    }
 
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (blabla.substring(0, 2).equals("add")) {
-
-                String name = blabla.split(" ")[2];
-                int price = Integer.valueOf(blabla.split(" ")[1]);
-
-//                for (Product pr: listOfProducts
-//                     ) {
-//                    if (!pr.name.equals(name)){
-                Product p = new Product();
-                p.name = name;
-                p.price = price;
-//                        listOfProducts.add(p);
-                try {
-                    Controller.getInstance().saveProduct(p);
-                    System.out.println("sacuvano");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-//                }
-//            }
+            if (blabla.equals("minmax")) {
+                for (Product p:MySqlCon.getInstance().getAllProducts()) {
+                    if (p.getPrice()<min) min=p.getPrice();
+                    if (p.getPrice()>max) max=p.getPrice();
+                }
+                System.out.println("MIN = "+min+", MAX = "+max);
+            }
 
-        }
-        while (!blabla.equals("end"));
+            if (blabla.equals("sum prices")) {
+                int sum = 0;
+                for (Product p : MySqlCon.getInstance().getAllProducts()) {
+                    sum += p.getPrice();
+                }
+                System.out.println("Ukupan zbir cena je: " + sum);
+            }
+
+            if (blabla.substring(0, 3).equals("add")) {
+
+                String name = blabla.split(" ")[2];
+                int price = 0;
+                try {
+                    price = Integer.valueOf(blabla.split(" ")[1]);
+                } catch (NumberFormatException e) {
+                    System.out.println("Niste dovfdhvjk");
+                    continue;
+                }
+                boolean exists = false;
+                for (Product pr : MySqlCon.getInstance().getAllProducts()) {
+                    if (pr.getName().equals(name)) {
+                        exists = true;
+                    }
+                }
+                if (!exists) {
+                    Product p = new Product();
+                    p.setName(name);
+                    p.setPrice(price);
+                    try {
+                        MySqlCon.getInstance().saveProduct(p);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        } while (!blabla.equals("end"));
+        MySqlCon.getInstance().closeConnection();
 
     }
 }
+
+
 

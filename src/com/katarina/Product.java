@@ -4,11 +4,18 @@ import java.util.List;
 
 public class Product {
 
-    int id;
-    int price;
-    String name;
+    private int id;
+    private int price;
+    private String name;
 
-
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", price=" + price +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
     public Product() {
 
