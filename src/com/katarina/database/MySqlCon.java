@@ -1,7 +1,7 @@
-package com.katarina;
+package com.katarina.database;
 
-import java.sql.*;
-import java.util.ArrayList;
+import com.katarina.domain.Product;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.sql.SQLException;
@@ -10,10 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class MySqlCon {
@@ -21,24 +18,19 @@ public class MySqlCon {
     private Connection connection;
     private static MySqlCon instance;
 
-    private MySqlCon()  {
+    private MySqlCon() {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/task1", "root", "");
-//            Statement stmt = connection.createStatement();
-//            ResultSet rs = stmt.executeQuery("select * from products");
-//            System.out.println("Connection OK");
-//            while (rs.next()) {
-//                System.out.println(rs.getInt(1) + "  " + rs.getString(3) + "  " + rs.getInt(2));
-//            }
-//            connection.close();
+            connection.close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-    public void closeConnection(){
+
+    public void closeConnection() {
         try {
             connection.close();
         } catch (SQLException e) {
@@ -47,12 +39,13 @@ public class MySqlCon {
     }
 
 
-    public static MySqlCon getInstance()  {
+    public static MySqlCon getInstance() {
         if (instance == null) {
             instance = new MySqlCon();
         }
         return instance;
     }
+
     public List<Product> getAllProducts() {
         List<Product> products = new LinkedList<>();
         String query = "SELECT * FROM products";
@@ -80,10 +73,8 @@ public class MySqlCon {
         try {
             String query = "INSERT INTO products(price, name) VALUES (?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setInt(1, product.getId());
             preparedStatement.setInt(1, product.getPrice());
             preparedStatement.setString(2, product.getName());
-//            preparedStatement.executeUpdate();
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException ex) {

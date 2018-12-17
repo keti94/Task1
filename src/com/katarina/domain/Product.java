@@ -1,4 +1,4 @@
-package com.katarina;
+package com.katarina.domain;
 
 import java.util.List;
 
