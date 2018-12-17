@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 
 public class Main {
 
+
     public static void main(String[] args) {
         // Konzonla aplikacija
         //
@@ -25,49 +26,69 @@ public class Main {
         //Gasi konkciju sa bazoms
         //Kada se pokrene gasenje aplikacije mora konekcija sa bazom da se prekine
         //
+
         String blabla = null;
-
-        do {
+        boolean aaa = true;
+        while (aaa) {
             System.out.println("What is your request?");
-
             try {
+
                 blabla = (new BufferedReader(new InputStreamReader(System.in))).readLine();
-                TaskExecutor taskExecutor = new TaskExecutor(Operation.valueOf(blabla));
-                taskExecutor.execute(Operation.valueOf(blabla));
+                String komanda = blabla.split(" ")[0];
+                if (komanda.equals("add")){
+                    String name = blabla.split(" ")[2];
+                    String price = blabla.split(" ")[1];
+                    if (Controller.getInstance().validation(price)) {
+                        int priceInt = Integer.valueOf(price);
+                        Product p = new Product(priceInt, name);
+                        if (!Controller.getInstance().exists(p)) Controller.getInstance().saveProduct(p);
+                    }
+                }else{
+
+                TaskExecutor taskExecutor = new TaskExecutor(Operation.valueOf(komanda));
+
+                taskExecutor.execute(Operation.valueOf(komanda));}
+
+//                if (komanda.equals("add")){
+//
+//                }
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+//            if (blabla.substring(0, 3).equals("add")) {
+//
+//                String name = blabla.split(" ")[2];
+//                String price = blabla.split(" ")[1];
+////                int price = 0;
+////                try {
+////                    price = Integer.valueOf(blabla.split(" ")[1]);
+////                } catch (NumberFormatException e) {
+////                    System.out.println("Niste dobro uneli broj");
+////                    continue;
+////                }
+//                if (Controller.getInstance().validation(price)) {
+//                    int priceInt = Integer.valueOf(price);
+//                    Product p = new Product(priceInt, name);
+//                    if (!Controller.getInstance().exists(p)) Controller.getInstance().saveProduct(p);
+//                }
+//                if (!Controller.getInstance().exists(p)) Controller.getInstance().saveProduct(p);
+//                boolean exists = false;
+//                for (Product pr : MySqlCon.getInstance().getAllProducts()) {
+//                    if (pr.getName().equals(name)) {
+//                        exists = true;
+//                    }
+//                }
+//                if (!exists) {
+//                    Controller.getInstance().saveProduct(p);
+//                }
 
-            if (blabla.substring(0, 3).equals("add")) {
-
-                String name = blabla.split(" ")[2];
-                int price = 0;
-                try {
-                    price = Integer.valueOf(blabla.split(" ")[1]);
-                } catch (NumberFormatException e) {
-                    System.out.println("Niste dovfdhvjk");
-                    continue;
-                }
-
-
-                boolean exists = false;
-                for (Product pr : MySqlCon.getInstance().getAllProducts()) {
-                    if (pr.getName().equals(name)) {
-                        exists = true;
-                    }
-                }
-                if (!exists) {
-                    Controller.getInstance().saveProduct(name, price);
-                }
-
-            }
-        } while (!Operation.valueOf(blabla).equals(Operation.end.toString()));
-
-
+            if (Operation.valueOf(blabla).equals(Operation.end))
+                aaa = false;
+        }}
     }
-}
+
 
 
 

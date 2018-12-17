@@ -2,12 +2,15 @@ package com.katarina.start;
 
 import com.katarina.controller.Controller;
 import com.katarina.database.MySqlCon;
+import com.katarina.domain.Product;
 
 enum Operation {add, list, minmax, sum, end};
 
 public class TaskExecutor {
 
     Operation operation;
+    static Product prod;
+
 
 
     public TaskExecutor(Operation operation) {
@@ -22,7 +25,10 @@ public class TaskExecutor {
 
         switch (operation) {
             case add:
-                Controller.getInstance().saveProduct("", 1);
+
+                Controller.getInstance().saveProduct(prod);
+//                //Controller.getInstance().getSubrstring();
+//                Controller.getInstance().saveProduct(product);
                 break;
             case list:
                 Controller.getInstance().getAllProducts();
