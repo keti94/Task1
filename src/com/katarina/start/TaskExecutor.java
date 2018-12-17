@@ -1,6 +1,7 @@
 package com.katarina.start;
 
 import com.katarina.controller.Controller;
+import com.katarina.database.MySqlCon;
 
 enum Operation {add, list, minmax, sum, end};
 

@@ -18,13 +18,13 @@ public class MySqlCon {
     private Connection connection;
     private static MySqlCon instance;
 
-    private MySqlCon() {
+    public MySqlCon() {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/task1", "root", "");
-            connection.close();
+//            connection.close();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -37,7 +37,6 @@ public class MySqlCon {
             e.printStackTrace();
         }
     }
-
 
     public static MySqlCon getInstance() {
         if (instance == null) {

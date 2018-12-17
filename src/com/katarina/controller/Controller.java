@@ -19,6 +19,10 @@ public class Controller {
         }
         return instance;
     }
+    public Controller(){
+        mySqlCon = new MySqlCon();
+
+    }
 
 //    public boolean exists(String addProcuct){
 //            String name = addProcuct.split(" ")[2];
@@ -67,7 +71,6 @@ public class Controller {
     public void getAllProducts() {
 
         try {
-            MySqlCon.getInstance().getAllProducts();
             for (Product p : MySqlCon.getInstance().getAllProducts()) {
                 System.out.println(p);
             }
@@ -76,9 +79,6 @@ public class Controller {
         }
     }
 
-//    public List<Product> getAllProductss(){
-//
-//    }
 
     public int sumPrices(){
         int sum=0;
